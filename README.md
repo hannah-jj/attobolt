@@ -4,9 +4,9 @@ A Slack bot that gives you a [Claude Code](https://docs.anthropic.com/en/docs/cl
 
 ## How it works
 
-1. You type `/attobolt [optional prompt]` in Slack
+1. You message the bot directly (DM) or @mention it in a channel
 2. The bot spawns a Claude Code CLI session in the server's working directory
-3. A dedicated Slack thread is created for that session
+3. Claude's response is posted as a thread reply to your message
 4. Reply in the thread to keep the conversation going — session context is preserved across server restarts
 
 ## Prerequisites
@@ -31,14 +31,6 @@ Go to [api.slack.com/apps](https://api.slack.com/apps) → **Create New App** �
 3. You'll be prompted to create an **App-Level Token** — give it the `connections:write` scope
 4. Copy the token (starts with `xapp-`) — this is your `SLACK_APP_TOKEN`
 
-### Add slash command
-
-Go to **Slash Commands** → **Create New Command**:
-
-| Command | Request URL | Description |
-|---|---|---|
-| `/attobolt` | _(any placeholder URL — Socket Mode ignores this)_ | Start a Claude Code session |
-
 ### Set bot token scopes
 
 Go to **OAuth & Permissions** → **Bot Token Scopes** and add:
@@ -46,7 +38,6 @@ Go to **OAuth & Permissions** → **Bot Token Scopes** and add:
 | Scope | Why |
 |---|---|
 | `chat:write` | Post messages and replies |
-| `commands` | Respond to slash commands |
 | `app_mentions:read` | Receive @mention events |
 | `im:history` | Receive direct messages |
 
@@ -110,7 +101,7 @@ uv run python -m attobolt --dev
 
 | Action | What to do |
 |---|---|
-| Start a session | `/attobolt` or `/attobolt fix the auth bug` |
+| Start a session | DM the bot, or @mention it in a channel |
 | Continue a session | Reply in the thread the bot created |
 | @mention in a session thread | Works the same as replying |
 
