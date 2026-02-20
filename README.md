@@ -49,6 +49,21 @@ Under **Subscribe to bot events** add:
 
 - `app_mention`
 - `message.im`
+- `assistant_thread_started` _(only if using Agents & Assistants mode — see below)_
+- `assistant_thread_context_changed` _(only if using Agents & Assistants mode)_
+
+### (Optional) Enable Agents & Assistants mode
+
+If you want attobolt to appear in Slack's AI assistant panel, go to **Agents & Assistants** in the left sidebar and toggle it on.
+
+**Behaviour difference:**
+
+| Mode | How sessions work |
+|---|---|
+| Regular DM | Each new message creates a new thread; Claude replies in that thread |
+| Agents & Assistants | The assistant panel thread is the session; Claude replies directly in it |
+
+When assistant mode is enabled, make sure `assistant_thread_started` and `assistant_thread_context_changed` are added to your event subscriptions (see above).
 
 ### Install the app
 

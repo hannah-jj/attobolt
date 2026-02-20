@@ -82,6 +82,16 @@ async def handle_mention(event: dict, say) -> None:
     await _start_session(text, event["ts"], say)
 
 
+@app.event("assistant_thread_started")
+async def handle_assistant_thread_started() -> None:
+    """Acknowledge assistant thread start; the first user message will open the session."""
+
+
+@app.event("assistant_thread_context_changed")
+async def handle_assistant_thread_context_changed() -> None:
+    """Acknowledge assistant thread context changes."""
+
+
 @app.event("message")
 async def handle_dm(event: dict, say) -> None:
     """Handle direct messages to the bot."""
@@ -90,13 +100,17 @@ async def handle_dm(event: dict, say) -> None:
     if event.get("bot_id") or event.get("subtype"):
         return
 
+    thread_ts = event.get("thread_ts")
+
     # If inside an existing session thread, continue the conversation
-    if event.get("thread_ts") and sessions.get(event["thread_ts"]):
-        await _reply_in_session(event.get("text", ""), event["thread_ts"], say)
+    if thread_ts and sessions.get(thread_ts):
+        await _reply_in_session(event.get("text", ""), thread_ts, say)
         return
 
-    # New DM — start a session; the DM message itself anchors the thread
-    await _start_session(event.get("text", ""), event["ts"], say)
+    # Use the existing thread_ts if present (assistant mode thread), otherwise
+    # anchor to this message's ts (regular DM — creates a new thread for the session)
+    anchor_ts = thread_ts or event["ts"]
+    await _start_session(event.get("text", ""), anchor_ts, say)
 
 
 async def main() -> None:
