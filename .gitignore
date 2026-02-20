@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[codz]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv
+venv/
+env/
+
+# Environment / secrets
+.env
+.envrc
+
+# Runtime data (generated at runtime, not part of source)
+sessions.json
+
+# Editor
+.vscode/
+.idea/
+.cursor*
+
+# OS
+.DS_Store
