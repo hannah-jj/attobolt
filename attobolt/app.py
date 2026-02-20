@@ -83,8 +83,39 @@ async def handle_mention(event: dict, say) -> None:
 
 
 @app.event("assistant_thread_started")
-async def handle_assistant_thread_started() -> None:
-    """Acknowledge assistant thread start; the first user message will open the session."""
+async def handle_assistant_thread_started(event: dict, client) -> None:
+    """Start a Claude session when the assistant thread opens and post an initial greeting."""
+    thread_info = event["assistant_thread"]
+    thread_ts = thread_info["thread_ts"]
+    channel_id = thread_info["channel_id"]
+    cwd = os.getcwd()
+
+    try:
+        response = await ask_claude(prompt="Hello", cwd=cwd)
+    except ClaudeCLIError as exc:
+        logger.error("Claude CLI error on assistant thread start: %s", exc)
+        await client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=thread_ts,
+            text=f"Failed to start Claude session:\n```{exc}```",
+        )
+        return
+
+    if response.is_error:
+        await client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=thread_ts,
+            text=f"Claude returned an error:\n```{response.text}```",
+        )
+        return
+
+    sessions.set(thread_ts, response.session_id, cwd=cwd)
+    logger.info("Assistant thread session: thread=%s -> session=%s", thread_ts, response.session_id)
+    await client.chat_postMessage(
+        channel=channel_id,
+        thread_ts=thread_ts,
+        text=response.text,
+    )
 
 
 @app.event("assistant_thread_context_changed")
