@@ -24,6 +24,8 @@ A Slack bot that gives you a [Claude Code](https://docs.anthropic.com/en/docs/cl
 
 Go to [api.slack.com/apps](https://api.slack.com/apps) → **Create New App** → **From scratch**.
 
+> **Tip:** You can also use **From a manifest** and paste in the included `app_manifest.yaml` to configure all scopes and event subscriptions automatically.
+
 ### Enable Socket Mode
 
 1. In the left sidebar go to **Socket Mode**
@@ -139,6 +141,7 @@ Session state (thread → Claude session ID) is saved to `sessions.json` in the 
 
 1. **Image and file support** — allow sending images and files to the bot and passing them as context to Claude
 2. **Approval support** — surface Claude's permission requests in Slack so you can approve or deny actions from your phone
+3. **Mac scheduler** — a built-in scheduler that runs alongside the bot; use `/schedule` in Slack to schedule any job (e.g. scripts, Claude tasks) via launchd on macOS
 
 ---
 
