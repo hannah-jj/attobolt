@@ -1,10 +1,10 @@
 # attobolt
 
-A Slack bot that gives you a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) session from anywhere — your phone, a meeting, on the go. Type `/attobolt` in any Slack channel and get a full AI coding assistant working in the directory where the server is running.
+A Slack bot that gives you a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) session from anywhere — your phone, a meeting, on the go. Message the bot and get a full AI coding assistant working in the directory where the server is running.
 
 ## How it works
 
-1. You message the bot directly (DM) or @mention it in a channel
+1. You message the bot directly (DM)
 2. The bot spawns a Claude Code CLI session in the server's working directory
 3. Claude's response is posted as a thread reply to your message
 4. Reply in the thread to keep the conversation going — session context is preserved across server restarts
@@ -38,7 +38,6 @@ Go to **OAuth & Permissions** → **Bot Token Scopes** and add:
 | Scope | Why |
 |---|---|
 | `chat:write` | Post messages and replies |
-| `app_mentions:read` | Receive @mention events |
 | `im:history` | Receive direct messages |
 
 ### Enable event subscriptions
@@ -47,7 +46,6 @@ Go to **Event Subscriptions** → toggle **Enable Events** on.
 
 Under **Subscribe to bot events** add:
 
-- `app_mention`
 - `message.im`
 - `assistant_thread_started` _(only if using Agents & Assistants mode — see below)_
 - `assistant_thread_context_changed` _(only if using Agents & Assistants mode)_
@@ -116,9 +114,8 @@ uv run python -m attobolt --dev
 
 | Action | What to do |
 |---|---|
-| Start a session | DM the bot, or @mention it in a channel |
+| Start a session | DM the bot |
 | Continue a session | Reply in the thread the bot created |
-| @mention in a session thread | Works the same as replying |
 
 Session state (thread → Claude session ID) is saved to `sessions.json` in the working directory and survives server restarts.
 
