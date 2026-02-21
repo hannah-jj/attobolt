@@ -100,6 +100,8 @@ cd /path/to/your/project
 uv run python -m attobolt
 ```
 
+> **Note:** With the `--dangerously-skip-permissions` flag enabled (the default), Claude can navigate to and work on any directory it can reach, regardless of where the server is located. The starting directory is just the initial working directory.
+
 The bot connects to Slack via Socket Mode — no public URL or ngrok needed.
 
 For auto-reload during development:
@@ -130,6 +132,13 @@ Session state (thread → Claude session ID) is saved to `sessions.json` in the 
 | `SLACK_BOT_TOKEN` | — | **Required.** `xoxb-` bot token |
 | `SLACK_APP_TOKEN` | — | **Required.** `xapp-` Socket Mode token |
 | `SESSIONS_FILE` | `sessions.json` | Path to session persistence file |
+
+---
+
+## Future expansion
+
+1. **Image and file support** — allow sending images and files to the bot and passing them as context to Claude
+2. **Approval support** — surface Claude's permission requests in Slack so you can approve or deny actions from your phone
 
 ---
 
